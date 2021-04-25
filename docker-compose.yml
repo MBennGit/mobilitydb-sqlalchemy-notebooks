@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  backend:
+    build: ./mobility-notebooks
+    ports:
+      - 8888:8888
+    volumes:
+      - ./notebooks:/home/jovyan
+      - ./app:/app
+    depends_on:
+      - db
+#    networks:
+#      - backend
+
+  db:
+    image: codewit/mobilitydb
+    ports:
+      - 5432:5432
+    volumes:
+      - "./db_data:/var/lib/postgresql"
+#    networks:
+#      - backend
+
+#networks:
+#  backend:
+#    driver: custom-driver-1
