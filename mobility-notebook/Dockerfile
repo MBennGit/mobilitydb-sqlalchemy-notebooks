@@ -134,7 +134,11 @@ RUN wget --quiet "https://github.com/conda-forge/miniforge/releases/download/${m
 RUN conda install --quiet --yes \
     'notebook=6.3.0' \
     'jupyterhub=1.3.0' \
-    'jupyterlab=3.0.14' && \
+    'jupyterlab=3.0.14' \
+    'SQLAlchemy' \
+    'movingpandas' \
+    'geopandas' \
+    'pyproj' && \
     conda clean --all -f -y && \
     npm cache clean --force && \
     jupyter notebook --generate-config && \
@@ -142,6 +146,12 @@ RUN conda install --quiet --yes \
     rm -rf /home/$NB_USER/.cache/yarn && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
+
+# COPY environment.yml .
+# RUN conda env create -f environment.yml
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
 EXPOSE 8888
 
